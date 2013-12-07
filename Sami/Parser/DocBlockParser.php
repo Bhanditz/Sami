@@ -145,7 +145,7 @@ class DocBlockParser
 
     protected function normalizeString($str)
     {
-        return preg_replace('/\s*\n\s*/', ' ', trim($str));
+        return preg_replace('/\h*\n\h*/', ' ', trim($str));
     }
 
     protected function move($text)
