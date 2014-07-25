@@ -44,7 +44,7 @@ class DocBlockParser
 
                 case 'tag':
 
-                    if (preg_match('/(\s*?)@api/As', $this->comment, $match)) {
+                    if (preg_match('/\n\s*@api/As', $this->comment, $match, null, $this->cursor)) {
                         $this->move($match[0]);
                         $doc->addTag('api', 'api');
                     } else {
