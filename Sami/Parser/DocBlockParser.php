@@ -43,13 +43,20 @@ class DocBlockParser
                     break;
 
                 case 'tag':
-                    try {
-                        list($type, $values) = $this->parseTag();
-                        $doc->addTag($type, $values);
-                    } catch (\LogicException $e) {
-                        $doc->addError($e->getMessage());
+
+                    if (preg_match('/(\s*?)@api/As', $this->comment, $match)) {
+                        $this->move($match[0]);
+                        $doc->addTag('api', 'api');
+                    } else {
+                        try {
+                            list($type, $values) = $this->parseTag();
+                            $doc->addTag($type, $values);
+                        } catch (\LogicException $e) {
+                            $doc->addError($e->getMessage());
+                        }
                     }
                     break;
+
             }
 
             if (preg_match('/\s*$/As', $this->comment, $match, null, $this->cursor)) {
@@ -145,7 +152,7 @@ class DocBlockParser
 
     protected function normalizeString($str)
     {
-        return preg_replace('/\h*\n\h*/', ' ', trim($str));
+        return preg_replace('/\s*\n\s*/', ' ', trim($str));
     }
 
     protected function move($text)
